@@ -15,7 +15,7 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
   int _time = 0;
   bool _isRunning = false;
 
-  List<String> _lapTimes = [];
+  final List<String> _lapTimes = [];
 
   void _clickButton() {
     _isRunning = !_isRunning;
@@ -28,7 +28,7 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
   }
 
   void _start() {
-    _timer = Timer.periodic(Duration(milliseconds: 10), (timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 10), (timer) {
       setState(() {
         _time++;
       });
@@ -43,7 +43,7 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
   }
 
   void _recordLapTime(String time) {
-    _lapTimes.insert(0, '${_lapTimes.length}등 $_time'); 
+    _lapTimes.insert(0, '${_lapTimes.length}등 $time');
   }
 
   void _pause() {
@@ -76,7 +76,7 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
               children: [
                 Text(
                   '$sec',
-                  style: TextStyle(fontSize: 50),
+                  style: const TextStyle(fontSize: 50),
                 ),
                 Text(
                   '$hundredth',
@@ -87,17 +87,7 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
               width: 100,
               height: 200,
               child: ListView(
-                children: [
-                  Center(child: Text('111')),
-                  Text('111'),
-                  Text('111'),
-                  Text('111'),
-                  Text('111'),
-                  Text('111'),
-                  Text('111'),
-                  Text('111'),
-                  Text('111'),
-                ],
+                children: _lapTimes.map((time) => Text(time)).toList() ,
               ),
             ),
             const Spacer(),
