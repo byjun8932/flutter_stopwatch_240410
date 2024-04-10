@@ -27,8 +27,17 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
     }
   }
 
-  void _start() {}
-  void _pause() {}
+  void _start() {
+    _timer = Timer.periodic(Duration(milliseconds: 10), (timer) {
+      setState(() {
+        _time++;
+      });
+    });
+  }
+
+  void _pause() {
+    _timer?.cancel();
+  }
 
   @override
   void dispose() {
@@ -38,23 +47,28 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    int sec = _time ~/ 100;
+    String hundredth = '${_time % 100}'.padLeft(2, '0');
+
     return Scaffold(
         appBar: AppBar(
           title: const Text('스탑워치'),
         ),
         body: Column(
           children: [
-            const SizedBox(height: 30,),
-            const Row(
+            const SizedBox(
+              height: 30,
+            ),
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  '0',
+                  '$sec',
                   style: TextStyle(fontSize: 50),
                 ),
                 Text(
-                  '00',
+                  '$hundredth',
                 )
               ],
             ),
@@ -63,7 +77,7 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
               height: 200,
               child: ListView(
                 children: [
-                   Center(child: Text('111')),
+                  Center(child: Text('111')),
                   Text('111'),
                   Text('111'),
                   Text('111'),
@@ -91,7 +105,9 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
                       _clickButton();
                     });
                   },
-                  child: _isRunning ? const Icon(Icons.pause ): const Icon(Icons.play_arrow),
+                  child: _isRunning
+                      ? const Icon(Icons.pause)
+                      : const Icon(Icons.play_arrow),
                 ),
                 FloatingActionButton(
                   backgroundColor: Colors.lightBlue,
