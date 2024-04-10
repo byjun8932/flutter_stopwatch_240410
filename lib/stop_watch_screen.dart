@@ -44,7 +44,7 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
 
   void _recordLapTime(String time) {
     setState(() {
-      _lapTimes.insert(0, '${_lapTimes.length}등 $time');
+      _lapTimes.insert(0, '${_lapTimes.length + 1}등 $time');
     });
   }
 
@@ -98,7 +98,7 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
           ),
           SizedBox(
             width: 350,
-            height: 200,
+            height: 400,
             child: Container(
               decoration: BoxDecoration(
                 border: Border.all(
@@ -115,22 +115,21 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
                     children: _lapTimes
                         .map(
                           (time) => Center(
-                        child: Text(
-                          time,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                            child: Text(
+                              time,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    )
+                        )
                         .toList(),
                   ),
                 ),
               ),
             ),
           ),
-
 
           SizedBox(
             width: 200,
