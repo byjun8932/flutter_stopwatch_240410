@@ -79,7 +79,7 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
                   style: const TextStyle(fontSize: 50),
                 ),
                 Text(
-                  '$hundredth',
+                  hundredth,
                 )
               ],
             ),
