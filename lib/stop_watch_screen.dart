@@ -14,26 +14,32 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
       appBar: AppBar(
         title: const Text('스탑워치'),
       ),
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      body: Column(
         children: [
-          FloatingActionButton(
-            backgroundColor: Colors.lime,
-            onPressed: () {},
-            child: const Icon(Icons.refresh),
+          Spacer(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              FloatingActionButton(
+                backgroundColor: Colors.lime,
+                onPressed: () {},
+                child: const Icon(Icons.refresh),
+              ),
+              FloatingActionButton(
+                backgroundColor: Colors.pink,
+                onPressed: () {},
+                child: const Icon(Icons.play_arrow),
+              ),
+              FloatingActionButton(
+                backgroundColor: Colors.lightBlue,
+                onPressed: () {},
+                child: const Icon(Icons.add),
+              ),
+            ],
           ),
-          FloatingActionButton(
-            backgroundColor: Colors.pink,
-            onPressed: () {},
-            child: const Icon(Icons.play_arrow),
-          ),
-          FloatingActionButton(
-            backgroundColor: Colors.lightBlue,
-            onPressed: () {},
-            child: const Icon(Icons.add),
-          ),
+          SizedBox(height: 30,)
         ],
-      ),
+      )
     );
   }
 }
