@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 class StopWatchScreen extends StatefulWidget {
@@ -11,20 +10,19 @@ class StopWatchScreen extends StatefulWidget {
 
 class _StopWatchScreenState extends State<StopWatchScreen> {
   Timer? _timer;
-
   int _time = 0;
   bool _isRunning = false;
-
   final List<String> _lapTimes = [];
 
   void _clickButton() {
-    _isRunning = !_isRunning;
-
-    if (_isRunning) {
-      _start();
-    } else {
-      _pause();
-    }
+    setState(() {
+      _isRunning = !_isRunning;
+      if (_isRunning) {
+        _start();
+      } else {
+        _pause();
+      }
+    });
   }
 
   void _start() {
@@ -36,14 +34,18 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
   }
 
   void _reset() {
-    _isRunning = false;
-    _timer?.cancel();
-    _lapTimes.clear();
-    _time = 0;
+    setState(() {
+      _isRunning = false;
+      _timer?.cancel();
+      _lapTimes.clear();
+      _time = 0;
+    });
   }
 
   void _recordLapTime(String time) {
-    _lapTimes.insert(0, '${_lapTimes.length}등 $time');
+    setState(() {
+      _lapTimes.insert(0, '${_lapTimes.length}등 $time');
+    });
   }
 
   void _pause() {
@@ -62,73 +64,116 @@ class _StopWatchScreenState extends State<StopWatchScreen> {
     String hundredth = '${_time % 100}'.padLeft(2, '0');
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('스탑워치'),
+      appBar: AppBar(
+        title: const Text('⏱️ Pikachu Stopwatch ⏱️'),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Colors.yellow.shade200, Colors.yellow.shade700],
+            ),
+          ),
         ),
-        body: Column(
-          children: [
-            const SizedBox(
-              height: 30,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  '$sec',
-                  style: const TextStyle(fontSize: 50),
+      ),
+      body: Column(
+        children: [
+          const SizedBox(
+            height: 30,
+          ),
+          // Add a moving image here
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                '$sec',
+                style: const TextStyle(fontSize: 50),
+              ),
+              Text(
+                hundredth,
+              )
+            ],
+          ),
+          SizedBox(
+            width: 350,
+            height: 200,
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.yellow,
+                  width: 4,
                 ),
-                Text(
-                  hundredth,
-                )
-              ],
-            ),
-            SizedBox(
-              width: 100,
-              height: 200,
-              child: ListView(
-                children: _lapTimes.map((time) => Text(time)).toList() ,
+                borderRadius: BorderRadius.circular(40),
+              ),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: _lapTimes
+                        .map(
+                          (time) => Center(
+                        child: Text(
+                          time,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    )
+                        .toList(),
+                  ),
+                ),
               ),
             ),
-            const Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                FloatingActionButton(
-                  backgroundColor: Colors.lime,
-                  onPressed: () {
-                    setState(() {
-                      _reset();
-                    });
-                  },
-                  child: const Icon(Icons.refresh),
-                ),
-                FloatingActionButton(
-                  backgroundColor: Colors.pink,
-                  onPressed: () {
-                    setState(() {
-                      _clickButton();
-                    });
-                  },
-                  child: _isRunning
-                      ? const Icon(Icons.pause)
-                      : const Icon(Icons.play_arrow),
-                ),
-                FloatingActionButton(
-                  backgroundColor: Colors.lightBlue,
-                  onPressed: () {
-                    setState(() {
-                      _recordLapTime('$sec.$hundredth');
-                    });
-                  },
-                  child: const Icon(Icons.add),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 30,
-            )
-          ],
-        ));
+          ),
+
+
+          SizedBox(
+            width: 200,
+            height: 200,
+            child: _isRunning
+                ? Image.asset(
+                    'assets/pikachu-running.gif') // Change this to the path of your moving image
+                : Image.asset('assets/pikachu-stop.png'),
+          ),
+          const Spacer(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              FloatingActionButton(
+                backgroundColor: Colors.lime,
+                onPressed: () {
+                  _reset();
+                },
+                child: const Icon(Icons.refresh),
+              ),
+              FloatingActionButton(
+                backgroundColor: Colors.pink,
+                onPressed: () {
+                  _clickButton();
+                },
+                child: _isRunning
+                    ? const Icon(Icons.pause)
+                    : const Icon(Icons.play_arrow),
+              ),
+              FloatingActionButton(
+                backgroundColor: Colors.lightBlue,
+                onPressed: () {
+                  _recordLapTime('$sec.$hundredth');
+                },
+                child: const Icon(Icons.add),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 30,
+          )
+        ],
+      ),
+    );
   }
 }
